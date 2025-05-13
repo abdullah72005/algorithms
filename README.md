@@ -34,18 +34,24 @@ Function calcDD1(matrix A, integer n):
 ```java
 Function calcDD2(matrix A, integer n):
     Initialize lrD = 0   // Sum of left-to-right diagonal
-    Initialize rlD = 0   // Sum of right-to-left diagonal
-
-    For i from 0 to n-1:
-        lrD = lrD + A[i][i]
-
-    Set r = 0, c = n - 1
-    While r < n and c >= 0:
-        rlD = rlD + A[r][c]
-        r = r + 1
-        c = c - 1
-
+    Initialize rlD = 0   // Sum of right-to-left diagonal'
+    rlD =  calcRightSide(A, n-1,0)
+    lrD =  calcLeftSide(A , n-1)
     Return absolute value of (lrD - rlD)
+
+Function calcRightSide(matrix A,integer n,integer m):
+    Initialize rlD = 0
+    IF n == 0 Do
+        Return A[n][m]
+    calcRightSide(A, n-1, m+1)
+
+
+Function calcLeftSide(matrix A,integer n):
+    Initialize lrD = 0
+    IF n == 0 Do
+        Return A[n][n]
+    calcLeftSide(A, n-1)
+    Return A[n][n] + lrD;
 ```
 
 ---
@@ -53,8 +59,8 @@ Function calcDD2(matrix A, integer n):
 ## 2. Algorithm Analysis
 
 Both functions compute the absolute difference between:
-- The **left-to-right diagonal** (A[i][i])
-- The **right-to-left diagonal** (A[i][n - i - 1])
+- The **left-to-right diagonal** lrD
+- The **right-to-left diagonal** rlD
 
 ### `calcDD1`
 - Combines both diagonal computations in a **single loop** using index `i`.
@@ -62,8 +68,11 @@ Both functions compute the absolute difference between:
 
 ### `calcDD2`
 - Separates the diagonals:
-  - First loop for the left-to-right diagonal.
-  - Second loop using two pointers (`r` and `c`) for the right-to-left.
+  - Each one goes recursively over itself until n reaches 0
+  - the calcRightSide calculates the right-left diagonal 
+  - it uses m to point to its horizontal and n to point to its vertical
+  - the calcLeftSide calculates the left-right diagonal 
+  - it uses n to point both vertical and horizontal location
 - Functionally correct but less elegant.
 
 ---
@@ -77,14 +86,15 @@ Let `n` be the size of the matrix (rows = columns).
 - `calcDD2`: O(n) — Two loops of O(n) each
 
 ### Space Complexity
-- Both use constant auxiliary space: **O(1)**
+- `calcDD1` use constant auxiliary space: **O(1)**
+- `calcDD2` use two recursive function of O(n) each:  **O(n)**
 
 ### Comparison Table
 | Metric              | `calcDD1`         | `calcDD2`              |
 |---------------------|-------------------|------------------------|
 | Time Complexity     | O(n)              | O(n)                   |
 | Space Complexity    | O(1)              | O(1)                   |
-| Code Readability    | Simple & clean  | Slightly verbose     |
-| Efficiency          | Single loop     | Redundant second loop |
+| Code Readability    | Simple & clean    | Slightly verbose       |
+| Efficiency          | Single loop       | goes recursivley twice |
 
 
