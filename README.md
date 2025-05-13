@@ -93,7 +93,7 @@ Let `n` be the size of the matrix (rows = columns).
 | Metric              | `calcDD1`         | `calcDD2`              |
 |---------------------|-------------------|------------------------|
 | Time Complexity     | O(n)              | O(n)                   |
-| Space Complexity    | O(1)              | O(1)                   |
+| Space Complexity    | O(1)              | O(n)                   |
 | Code Readability    | Simple & clean    | Slightly verbose       |
 | Efficiency          | Single loop       | goes recursivley twice |
 
